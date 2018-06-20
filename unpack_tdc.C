@@ -1,10 +1,10 @@
 void unpack_tdc() {
   // Create source with unpackers ----------------------------------------------
   gROOT->SetBatch(true);
-  auto source = new ShipTdcSource();
+  auto source = new ShipTdcSource("SPILLDATA_0C00_1526641008.rawdata");
 
   // NeuLAND MBS parameters -------------------------------
-  auto unpacker = new ShipTdcUnpack();
+  auto unpacker = new DriftTubeUnpack();
   source->AddUnpacker(unpacker);
 
   // Create online run ---------------------------------------------------------
