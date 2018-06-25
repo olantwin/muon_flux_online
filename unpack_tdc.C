@@ -1,7 +1,7 @@
-void unpack_tdc() {
+void unpack_tdc(std::string infile="SPILLDATA_0C00_1526641008.rawdata", TString outfile="output.root") {
   // Create source with unpackers ----------------------------------------------
   gROOT->SetBatch(true);
-  auto source = new ShipTdcSource("SPILLDATA_0C00_1526641008.rawdata");
+  auto source = new ShipTdcSource(infile);
 
   // NeuLAND MBS parameters -------------------------------
   auto unpacker = new DriftTubeUnpack();
@@ -9,7 +9,7 @@ void unpack_tdc() {
 
   // Create online run ---------------------------------------------------------
   auto run = new FairRunOnline(source);
-  run->SetOutputFile("output.root");
+  run->SetOutputFile(outfile);
   run->ActivateHttpServer();
   run->SetAutoFinish(true);
 
@@ -20,17 +20,8 @@ void unpack_tdc() {
   // Initialize ----------------------------------------------------------------
   run->Init();
 
-  // Runtime data base ---------------------------------------------------------
-  FairRuntimeDb *rtdb = run->GetRuntimeDb();
-  Bool_t kParameterMerged = kTRUE;
-  FairParRootFileIo *parOut = new FairParRootFileIo(kParameterMerged);
-  parOut->open("params.root");
-  rtdb->setOutput(parOut);
-  rtdb->print();
-
   // Run -----------------------------------------------------------------------
   run->Run(-1, 0); // run over entire file for negative argument.
-  rtdb->saveOutput();
 
   Int_t nHits = unpacker->GetNHitsTotal();
   cout << nHits << endl;
