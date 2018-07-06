@@ -10,6 +10,7 @@ for FILE in $DIR/*.rawdata; do
     LOGFILE=conversion_$(basename $FILE .rawdata).log
     RUNDIR=$(basename $DIR)
     RUN=${RUNDIR:4}
+    RUN=$((10#$RUN))
     OUTPUTPATH=/eos/experiment/ship/data/muflux/rawdata/$RUNDIR
     xrdfs $EOSSHIP stat $OUTPUTPATH || xrdfs $EOSSHIP mkdir $OUTPUTPATH
     xrdfs $EOSSHIP stat $OUTPUTPATH/$OUTPUTFILE || docker run -v $DIR:$DIR:Z -v $PWD:/workdir:Z olantwin/muon_flux_online:$TAG bash -c "cd muon_flux_online; alienv setenv FairShip/latest -c root -q -b \"unpack_tdc.C(\\\"$DIR$FILE\\\", \\\"/workdir/$OUTPUTFILE\\\", $RUN)\" > /workdir/$LOGFILE 2>&1"
