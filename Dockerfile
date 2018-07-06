@@ -1,3 +1,3 @@
-FROM olantwin/fairship:online-latest
+FROM olantwin/fairship:latest
 
 ADD . /muon_flux_online
