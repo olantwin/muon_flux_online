@@ -10,7 +10,7 @@ void unpack_tdc(std::string infile="SPILLDATA_0C00_1526641008.rawdata", TString 
   // Create online run ---------------------------------------------------------
   auto run = new FairRunOnline(source);
   run->SetOutputFile(outfile);
-  run->ActivateHttpServer(false);
+  run->ActivateHttpServer();
   run->SetAutoFinish(true);
   run->SetRunId(run_number);
 
