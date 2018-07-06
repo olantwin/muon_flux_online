@@ -10,13 +10,13 @@ void unpack_tdc(std::string infile="SPILLDATA_0C00_1526641008.rawdata", TString 
   // Create online run ---------------------------------------------------------
   auto run = new FairRunOnline(source);
   run->SetOutputFile(outfile);
-  run->ActivateHttpServer();
+  /* run->ActivateHttpServer(); */
   run->SetAutoFinish(true);
   run->SetRunId(run_number);
 
   // Create analysis task ------------------------------------------------------
-  auto task = new ShipTdcTask("ExampleTask", 1);
-  run->AddTask(task);
+  /* auto task = new ShipTdcTask("ExampleTask", 1); */
+  /* run->AddTask(task); */
 
   // Initialize ----------------------------------------------------------------
   run->Init();
