@@ -8,7 +8,7 @@ inotifywait -r -m "$DIR" -e create -e moved_to |
         echo "The file '$FILE' appeared in directory '$path' via '$action'"
 	[[ $(basename $FILE) =~ ^RUN_8000_.{4} ]] && RUNDIR=$(basename $FILE) && RUN=${RUNDIR:4} && RUN=$((10#$RUN)) && ./elog.py --text "New run $RUN being uploaded" --subject "Start conversion run $RUN" --run $RUN && continue
 	RUNDIR=$(basename $path)
-	RUN=${RUNDIR:4}
+	RUN=${RUNDIR:9}
 	RUN=$((10#$RUN))
 	OUTPUTPATH=/eos/experiment/ship/data/muflux/rawdata/$RUNDIR
 	xrdfs $EOSSHIP stat $OUTPUTPATH || xrdfs $EOSSHIP mkdir $OUTPUTPATH
