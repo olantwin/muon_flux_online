@@ -1,6 +1,7 @@
 #!/bin/bash
 
 set -x
+set -u
 
 DIR=/data/SHiP_testBeam/Data
 
