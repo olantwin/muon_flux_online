@@ -7,9 +7,9 @@ TAG=DTv3
 inotifywait -r -m "$DIR" -e create -e moved_to |
     while read path action FILE; do
         echo "The file '$FILE' appeared in directory '$path' via '$action'"
-	[[ $(basename $FILE) =~ ^RUN_ ]] && RUNDIR=$(basename $FILE) && RUN=${RUNDIR:4} && RUN=$((10#$RUN)) && ./elog.py --text "New run $RUN being converted using tag $TAG" --subject "Start conversion run $RUN" --run $RUN && continue
+	[[ $(basename $FILE) =~ ^RUN_ ]] && RUNDIR=$(basename $FILE) && RUN=${RUNDIR:9} && RUN=$((10#$RUN)) && ./elog.py --text "New run $RUN being converted using tag $TAG" --subject "Start conversion run $RUN" --run $RUN && continue
 	RUNDIR=$(basename $path)
-	RUN=${RUNDIR:4}
+	RUN=${RUNDIR:9}
 	[[ $RUN == 0000000000 ]] && continue
 	RUN=$((10#$RUN))
 	OUTPUTFILE=$(basename $FILE .rawdata).root

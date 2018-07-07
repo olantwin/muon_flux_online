@@ -10,7 +10,7 @@ for FILE in $DIR/*.rawdata; do
     OUTPUTFILE=$(basename $FILE .rawdata).root
     LOGFILE=conversion_$(basename $FILE .rawdata).log
     RUNDIR=$(basename $DIR)
-    RUN=${RUNDIR:4}
+    RUN=${RUNDIR:9}
     RUN=$((10#$RUN))
     OUTPUTPATH=/eos/experiment/ship/data/muflux/rawdata/$RUNDIR
     xrdfs $EOSSHIP stat $OUTPUTPATH || xrdfs $EOSSHIP mkdir $OUTPUTPATH
