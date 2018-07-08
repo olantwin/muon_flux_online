@@ -12,6 +12,6 @@ inotifywait -r -m "$DIR" -e create -e moved_to |
 	RUN=$((10#$RUN))
 	OUTPUTPATH=/eos/experiment/ship/data/muflux/rawdata/$RUNDIR
 	xrdfs $EOSSHIP stat $OUTPUTPATH || xrdfs $EOSSHIP mkdir $OUTPUTPATH
-	xrdcp $FILE $EOSSHIP$OUTPUTPATH
+	xrdcp $path$FILE $EOSSHIP$OUTPUTPATH
 	flock files_to_convert.lock echo "$EOSSHIP$OUTPUTPATH$(basename "$FILE")" >> files_to_convert.txt
     done
