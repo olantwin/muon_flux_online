@@ -5,8 +5,8 @@ set -u
 
 DIR=/data/SHiP_testBeam/Data
 
-for FILE in $DIR/RUN_8000_2**/*; do
-	[[ $(basename $FILE) =~ ^RUN_8000_.{4} ]] && RUNDIR=$(basename $FILE) && RUN=${RUNDIR:9} && RUN=$((10#$RUN)) && ./elog.py --text "New run $RUN being uploaded" --subject "Start conversion run $RUN" --run $RUN && continue
+for FILE in $DIR/RUN_8000_????/*; do
+	[[ $(basename $FILE) =~ ^RUN_8000_.{4}$ ]] && RUNDIR=$(basename $FILE) && RUN=${RUNDIR:9} && RUN=$((10#$RUN)) && continue
 	RUNDIR=$(basename $(dirname $FILE))
 	RUN=${RUNDIR:9}
 	RUN=$((10#$RUN))
