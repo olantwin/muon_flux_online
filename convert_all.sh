@@ -4,7 +4,7 @@ set -x
 set -u
 
 DIR=$1
-TAG=DTv3
+TAG=DTv4
 for FILE in $DIR/*.rawdata; do
     [[ $(basename $FILE) =~ ^SPILLDATA ]] || continue
     OUTPUTFILE=$(basename $FILE .rawdata).root
