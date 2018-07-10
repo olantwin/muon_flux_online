@@ -6,6 +6,7 @@ void unpack_tdc(std::string infile="SPILLDATA_0C00_1526641008.rawdata", TString 
   // NeuLAND MBS parameters -------------------------------
   source->AddUnpacker(new DriftTubeUnpack());
   source->AddUnpacker(new RPCUnpack());
+  source->AddUnpacker(new ScalerUnpack());
 
   // Create online run ---------------------------------------------------------
   auto run = new FairRunOnline(source);
