@@ -1,4 +1,4 @@
-void unpack_tdc(std::string infile="SPILLDATA_0C00_1526641008.rawdata", TString outfile="output.root", int run_number=0) {
+void unpack_tdc(TString infile="SPILLDATA_0C00_1526641008.rawdata", TString outfile="output.root", int run_number=0) {
   // Create source with unpackers ----------------------------------------------
   gROOT->SetBatch(true);
   auto source = new ShipTdcSource(infile);
