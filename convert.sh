@@ -3,7 +3,7 @@
 set -x
 
 DIR=$1
-TAG=DTv5
+TAG=DTv6
 inotifywait -r -m "$DIR" -e create -e moved_to |
     while read -r path action FILE; do
         echo "The file '$FILE' appeared in directory '$path' via '$action'"
