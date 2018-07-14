@@ -12,11 +12,11 @@ inotifywait -r -m "$DIR" -e create -e moved_to |
 	RUN=${RUNDIR:9}
 	OUTPUTFILE=$(basename "$FILE" .rawdata).root
 	OUTPUTPATH=/eos/experiment/ship/data/muflux/rawdata/$RUNDIR
+	xrdfs "$EOSSHIP" stat "$OUTPUTPATH" || xrdfs "$EOSSHIP" mkdir "$OUTPUTPATH"
 	xrdcp "$path""$FILE" "$EOSSHIP""$OUTPUTPATH"
 	[[ $RUN == 0000 ]] && continue
 	LOGFILE=conversion_$(basename "$FILE" .rawdata).log
 	RUN=$((10#$RUN))
 	[[ $(basename "$FILE") =~ ^SPILLDATA ]] && docker run -v "$DIR":"$DIR":Z -v "$PWD":/workdir:Z olantwin/muon_flux_online:$TAG bash -c "cd muon_flux_online; alienv setenv FairShip/latest -c root -q -b \"unpack_tdc.C(\\\"$path$FILE\\\", \\\"/workdir/$OUTPUTFILE\\\", $RUN)\" > /workdir/$LOGFILE 2>&1"
-	xrdfs "$EOSSHIP" stat "$OUTPUTPATH" || xrdfs "$EOSSHIP" mkdir "$OUTPUTPATH"
 	xrdcp "$OUTPUTFILE" "$EOSSHIP""$OUTPUTPATH" && rm -f "$OUTPUTFILE"
     done
