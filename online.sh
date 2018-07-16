@@ -13,7 +13,7 @@ inotifywait -r -m "$DIR" -e create -e moved_to |
 	RUN=$((10#$RUN))
 	OUTPUTPATH=/eos/experiment/ship/data/muflux/rawdata/$RUNDIR
 	xrdfs "$EOSSHIP" stat "$OUTPUTPATH" || xrdfs "$EOSSHIP" mkdir "$OUTPUTPATH"
-	sleep 10s
+	sleep 3s
 	xrdcp "$path""$FILE" "$EOSSHIP""$OUTPUTPATH"
 	if [[ $(basename "$FILE") =~ ^SPILLDATA ]]; then
 	    OUTPUTFILE=$(basename "$FILE" .raw).root
