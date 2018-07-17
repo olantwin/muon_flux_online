@@ -4,6 +4,7 @@ set -x
 set -u
 
 DIR=$1
+EOSSHIP=root://eospublic.cern.ch/
 
 for FILE in $DIR/*.dat; do
 	RUNDIR=$(basename "$(dirname "$FILE")")
