@@ -1,0 +1,9 @@
+executable              = unpack.sh
+arguments               = $(file)
+output                  = convert.$(ClusterId).$(ProcId).out
+error                   = convert.$(ClusterId).$(ProcId).err
+log                     = convert.$(ClusterId).log
+
+transfer_output_files = ""
++JobFlavour = "long lunch"
+queue file from matching files_to_convert*.txt
