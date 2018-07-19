@@ -17,6 +17,9 @@ inotifywait -r -m "$DIR" -e create -e moved_to |
 	[[ $RUN == 0000 ]] && continue
 	LOGFILE=conversion_$(basename "$FILE" .rawdata).log
 	RUN=$((10#$RUN))
-	[[ $(basename "$FILE") =~ ^SPILLDATA ]] && docker run -v "$DIR":"$DIR":Z -v "$PWD":/workdir:Z olantwin/muon_flux_online:$TAG bash -c "cd muon_flux_online; alienv setenv FairShip/latest -c root -q -b \"unpack_tdc.C(\\\"$path$FILE\\\", \\\"/workdir/$OUTPUTFILE\\\", $RUN)\" > /workdir/$LOGFILE 2>&1"
+	[[ $(basename "$FILE") =~ ^SPILLDATA ]] && docker run -v "$DIR":"$DIR":Z -v "$PWD":/workdir:Z olantwin/muon_flux_online:$TAG bash -c "cd muon_flux_online; alienv setenv FairShip/latest -c root -q -b \"unpack_tdc.C(\\\"$path$FILE\\\", \\\"/workdir/$OUTPUTFILE\\\", $RUN)\" > /workdir/$LOGFILE 2>&1" && rm "$LOGFILE"
 	xrdcp "$OUTPUTFILE" "$EOSSHIP""$OUTPUTPATH" && rm -f "$OUTPUTFILE"
+	if [ -e "$LOGFILE" ]; then
+	    mv "$LOGFILE" /mnt/data/muon_flux_online/
+	fi
     done
