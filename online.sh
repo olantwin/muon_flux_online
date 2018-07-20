@@ -18,7 +18,7 @@ inotifywait -r -m "$DIR" -e create -e moved_to |
 	if [[ $(basename "$FILE") =~ ^SPILLDATA ]]; then
 	    OUTPUTFILE=$(basename "$FILE" .raw).root
 	    LOGFILE=conversion_$(basename "$FILE" .raw).log
-	    root -q -b "unpack_tdc.C(\"$path$FILE\", \"$OUTPUTFILE\", $RUN)" > "$LOGFILE" 2>&1
+	    root -q -b "unpack_tdc.C(\"$path$FILE\", \"$OUTPUTFILE\", $RUN)" > "$LOGFILE" 2>&1 && rm "$LOGFILE"
 	    xrdcp "$OUTPUTFILE" "$EOSSHIP""$OUTPUTPATH" && rm -f "$OUTPUTFILE"
 	fi
     done
