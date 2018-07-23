@@ -1,9 +1,11 @@
 #!/bin/bash
 
-ship
+source /afs/cern.ch/user/o/olantwin/SHiP_Software/setup.sh
+
+set -ux
 
 while read -r ROOTFILE; do
-	xrdfs "$EOSSHIP" stat "$ROOTFILE" || continue
+	xrdfs "$EOSSHIP" stat "$ROOTFILE" && continue
 	RUNDIR=$(basename "$(dirname "$ROOTFILE")")
 	PARTITION=${RUNDIR:4:4}
 	case "$PARTITION" in
