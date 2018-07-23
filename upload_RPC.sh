@@ -16,15 +16,17 @@ DIR=$1
 EOSSHIP=root://eospublic.cern.ch/
 
 RUNDIR=$(basename "$DIR")
-RUN=${RUNDIR:3}
-RUN=$((10#$RUN))
+RUN=$((10#${RUNDIR:3}))
 RUNDIR=RUN_0B00_$(printf "%04d" $RUN)
 OUTPUTPATH=/eos/experiment/ship/data/muflux/rawdata/$RUNDIR
 xrdfs "$EOSSHIP" stat "$OUTPUTPATH" || xrdfs "$EOSSHIP" mkdir "$OUTPUTPATH"
 EOSFILES=$(xrdfs "$EOSSHIP" ls "$OUTPUTPATH")
-for FILE in $DIR/*.dat; do
-    if ! in_list "$OUTPUTPATH"/"$(basename "$FILE")" "$EOSFILES"; then
-	xrdcp "$FILE" "$EOSSHIP""$OUTPUTPATH"
+for FILE in $DIR/*16_1.dat; do
+    SPILL=$(tmp=$(basename "$FILE"); echo "${tmp:13:8}")
+    OUTPUTFILE=SPILLDATA_"$SPILL".tar
+    if ! in_list "$OUTPUTPATH"/"$OUTPUTFILE" "$EOSFILES"; then
+	tar -cf "$OUTPUTFILE" "$(tmp=$(basename "$FILE"); echo "${tmp%_??_?.dat}")"*.dat
+	xrdcp "$OUTPUTFILE" "$EOSSHIP""$OUTPUTPATH" && rm "$OUTPUTFILE"
     else
 	echo "File $FILE already uploaded"
     fi
