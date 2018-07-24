@@ -24,8 +24,9 @@ EOSFILES=$(xrdfs "$EOSSHIP" ls "$OUTPUTPATH")
 for FILE in $DIR/*16_1.dat; do
     SPILL=$(tmp=$(basename "$FILE"); echo "${tmp:13:8}")
     OUTPUTFILE=SPILLDATA_"$SPILL".tar
+    FILES=($(tmp=$(basename "$FILE"); echo "${tmp%_??_?.dat}")*.dat)
     if ! in_list "$OUTPUTPATH"/"$OUTPUTFILE" "$EOSFILES"; then
-	tar -cf "$OUTPUTFILE" "$(tmp=$(basename "$FILE"); echo "${tmp%_??_?.dat}")"*.dat
+	tar -cf "$OUTPUTFILE" "${FILES[@]}"
 	xrdcp "$OUTPUTFILE" "$EOSSHIP""$OUTPUTPATH" && rm "$OUTPUTFILE"
     else
 	echo "File $FILE already uploaded"
