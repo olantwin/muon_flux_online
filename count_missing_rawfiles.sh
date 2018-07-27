@@ -16,10 +16,10 @@ in_list() {
 }
 
 count=0
-for RUN in $LOCAL; do
+for RUN in $LOCAL/*; do
     [[ $(basename "$RUN") =~ ^RUN_8000_2.{3}$ ]] || continue
     SPILLS=$RUN/*.raw*
-    OUTPUTPATH=/eos/experiment/ship/data/muflux/rawdata/"$RUN"
+    OUTPUTPATH="$REMOTE""$RUN"
     REMOTE_FILES=$(xrdfs "$EOSSHIP" ls "$OUTPUTPATH")
     for SPILL in $SPILLS; do
 	if ! in_list "$SPILL" "$REMOTE_FILES"; then
