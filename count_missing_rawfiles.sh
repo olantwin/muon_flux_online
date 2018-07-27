@@ -19,7 +19,7 @@ count=0
 for RUN in $LOCAL/*; do
     [[ $(basename "$RUN") =~ ^RUN_8000_2.{3}$ ]] || continue
     SPILLS=$RUN/*.raw*
-    OUTPUTPATH="$REMOTE"$(basename "$RUN")
+    OUTPUTPATH="$REMOTE"/$(basename "$RUN")
     REMOTE_FILES=$(xrdfs "$EOSSHIP" ls "$OUTPUTPATH")
     for SPILL in $SPILLS; do
 	if ! in_list "$OUTPUTPATH"/$(basename "$SPILL") "$REMOTE_FILES"; then
