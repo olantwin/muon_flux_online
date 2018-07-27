@@ -2,7 +2,7 @@
 
 set -x
 
-DIR=/data/SHiP_testBeam/Data
+DIR=/home/SHiP_testBeam/Data
 inotifywait -r -m "$DIR" -e create -e moved_to |
     while read -r path action FILE; do
         echo "The file '$FILE' appeared in directory '$path' via '$action'"
@@ -12,9 +12,9 @@ inotifywait -r -m "$DIR" -e create -e moved_to |
 	RUN=${RUNDIR:9}
 	[[ $RUN =~ ^.{4}\;.*$ ]] && continue
 	RUN=$((10#$RUN))
-	OUTPUTPATH=/eos/experiment/ship/data/muflux/rawdata/$RUNDIR
+	OUTPUTPATH=/eos/experiment/ship/data/charmxsec/rawdata/$RUNDIR
 	xrdfs "$EOSSHIP" stat "$OUTPUTPATH" || xrdfs "$EOSSHIP" mkdir "$OUTPUTPATH"
-	xrdcp "$path""$FILE" "$EOSSHIP""$OUTPUTPATH"
+	xrdcp "$path""$FILE" "$EOSSHIP""$OUTPUTPATH" &
 	if [[ $(basename "$FILE") =~ ^SPILLDATA ]]; then
 	    OUTPUTFILE=$(basename "$FILE" .raw).root
 	    LOGFILE=conversion_$(basename "$FILE" .raw).log
