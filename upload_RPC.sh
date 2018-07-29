@@ -10,10 +10,12 @@ in_list() {
     return 1
 }
 
-set -u
+set -ux
 
 DIR=$1
 EOSSHIP=root://eospublic.cern.ch/
+
+cd $DIR || exit 1
 
 RUNDIR=$(basename "$DIR")
 RUN=$((10#${RUNDIR:3}))
@@ -21,10 +23,10 @@ RUNDIR=RUN_0B00_$(printf "%04d" $RUN)
 OUTPUTPATH=/eos/experiment/ship/data/muflux/rawdata/$RUNDIR
 xrdfs "$EOSSHIP" stat "$OUTPUTPATH" || xrdfs "$EOSSHIP" mkdir "$OUTPUTPATH"
 EOSFILES=$(xrdfs "$EOSSHIP" ls "$OUTPUTPATH")
-for FILE in $DIR/*16_1.dat; do
+for FILE in *16_1.dat; do
     SPILL=$(tmp=$(basename "$FILE"); echo "${tmp:13:8}")
-    OUTPUTFILE=SPILLDATA_"$SPILL".tar
-    FILES=($(tmp=$(basename "$FILE"); echo "${tmp%_??_?.dat}")*.dat)
+    OUTPUTFILE=/rsync_disk/home/nessie01/muon_flux_online/SPILLDATA_"$SPILL".tar
+    FILES=(${FILE%_??_?.dat}*.dat)
     if ! in_list "$OUTPUTPATH"/"$OUTPUTFILE" "$EOSFILES"; then
 	tar -cf "$OUTPUTFILE" "${FILES[@]}"
 	xrdcp "$OUTPUTFILE" "$EOSSHIP""$OUTPUTPATH" && rm "$OUTPUTFILE"
