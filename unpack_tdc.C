@@ -7,6 +7,9 @@ void unpack_tdc(TString infile="SPILLDATA_0C00_1526641008.rawdata", TString outf
   source->AddUnpacker(new DriftTubeUnpack());
   source->AddUnpacker(new RPCUnpack());
   source->AddUnpacker(new ScalerUnpack());
+  source->AddUnpacker(new PixelUnpack(0x0800));
+  source->AddUnpacker(new PixelUnpack(0x0801));
+  source->AddUnpacker(new PixelUnpack(0x0802));
 
   // Create online run ---------------------------------------------------------
   auto run = new FairRunOnline(source);
