@@ -11,7 +11,7 @@ inotifywait -r -m "$DIR" -e create -e moved_to |
 	RUNDIR=$(basename "$path")
 	RUN=${RUNDIR:9}
 	OUTPUTFILE=$(basename "$FILE" .rawdata).root
-	OUTPUTPATH=/eos/experiment/ship/data/muflux/rawdata/$RUNDIR
+	OUTPUTPATH=/eos/experiment/ship/data/charmxsec/rawdata/$RUNDIR
 	xrdfs "$EOSSHIP" stat "$OUTPUTPATH" || xrdfs "$EOSSHIP" mkdir "$OUTPUTPATH"
 	xrdcp "$path""$FILE" "$EOSSHIP""$OUTPUTPATH"
 	[[ $RUN == 0000 ]] && continue
