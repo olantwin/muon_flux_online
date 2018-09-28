@@ -15,13 +15,16 @@ int main(int argc, char **argv)
    std::string infile, outfile;
    try {
       int run_number = 0;
+      bool charm = false;
       /** Define and parse the program options
        */
       namespace po = boost::program_options;
       po::options_description desc("Options");
-      desc.add_options()("infile,f", po::value<std::string>(&infile)->required(),
-                         "Input file")("outfile,o", po::value<std::string>(&outfile)->required(), "Output file")(
-         "run,n", po::value<int>(), "Output file")("add", "additional options")("like", "this");
+      desc.add_options()
+         ("infile,f", po::value<std::string>(&infile)->required(), "Input file")
+         ("outfile,o", po::value<std::string>(&outfile)->required(), "Output file")
+         ("run,n", po::value<int>(&run_number), "Output file")
+         ("charm", po::bool_switch(&charm), "Unpack charm data (default: muon flux)");
 
       po::variables_map vm;
       try {
@@ -39,13 +42,15 @@ int main(int argc, char **argv)
       gROOT->SetBatch(true);
       auto source = new ShipTdcSource(infile.data());
 
-      // NeuLAND MBS parameters -------------------------------
       source->AddUnpacker(new DriftTubeUnpack());
       source->AddUnpacker(new RPCUnpack());
       source->AddUnpacker(new ScalerUnpack());
-      source->AddUnpacker(new PixelUnpack(0x0800));
-      source->AddUnpacker(new PixelUnpack(0x0801));
-      source->AddUnpacker(new PixelUnpack(0x0802));
+      if (charm) {
+         // TODO merge into single unpacker?
+         source->AddUnpacker(new PixelUnpack(0x0800));
+         source->AddUnpacker(new PixelUnpack(0x0801));
+         source->AddUnpacker(new PixelUnpack(0x0802));
+      }
 
       // Create online run ---------------------------------------------------------
       auto run = new FairRunOnline(source);
