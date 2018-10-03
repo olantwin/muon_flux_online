@@ -20,9 +20,9 @@ int main(int argc, char **argv)
       namespace po = boost::program_options;
       po::options_description desc("Options");
       desc.add_options()
-         ("infile,f", po::value<std::string>(&infile)->required(), "Input file")
+         ("infile,f", po::value<std::string>(&infile)->required(), "Input file (can be on EOS)")
          ("outfile,o", po::value<std::string>(&outfile)->required(), "Output file")
-         ("run,n", po::value<int>(&run_number), "Output file")
+         ("run,n", po::value<int>(&run_number), "Run number")
          ("charm", po::bool_switch(&charm), "Unpack charm data (default: muon flux)");
 
       po::variables_map vm;
