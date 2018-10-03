@@ -1,5 +1,4 @@
 #include "DriftTubeUnpack.h"
-#include "FairRootFileSink.h"
 #include "FairRunOnline.h"
 #include "PixelUnpack.h"
 #include "RPCUnpack.h"
@@ -8,7 +7,7 @@
 #include "TROOT.h"
 #include "TString.h"
 #include "boost/program_options.hpp"
-#include "fairlogger/Logger.h"
+#include "FairLogger.h"
 
 int main(int argc, char **argv)
 {
@@ -34,8 +33,8 @@ int main(int argc, char **argv)
          po::notify(vm); // throws on error, so do after help in case
                          // there are any problems
       } catch (po::error &e) {
-         LOG(error) << "ERROR: " << e.what();
-         LOG(error) << desc;
+         LOG(ERROR) << e.what() << FairLogger::endl;
+         LOG(ERROR) << desc << FairLogger::endl;
          return 1;
       }
 
@@ -54,7 +53,7 @@ int main(int argc, char **argv)
 
       // Create online run ---------------------------------------------------------
       auto run = new FairRunOnline(source);
-      run->SetSink(new FairRootFileSink(outfile.data()));
+      run->SetOutputFile(outfile.data());
       run->SetAutoFinish(true);
       run->SetRunId(run_number);
 
@@ -65,7 +64,7 @@ int main(int argc, char **argv)
       run->Run(-1, 0); // run over entire file for negative argument.
 
    } catch (std::exception &e) {
-      LOG(error) << "Unhandled Exception reached the top of main: " << e.what() << ", application will now exit";
+      LOG(ERROR) << "Unhandled Exception reached the top of main: " << e.what() << ", application will now exit" << FairLogger::endl;
       return 2;
    }
 
