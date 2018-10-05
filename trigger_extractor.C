@@ -78,7 +78,7 @@ void trigger_extractor(TString infile) {
               std::cout << TString::Format("SC%.2d: %d", i, df->scalers[i])
                         << std::endl;
             }
-            std::vector<uint16_t> slices(df->slices, df->slices + df->getSliceCount());
+            std::vector<uint32_t> slices(df->slices, df->slices + df->getSliceCount());
             std::cout << "Slices:" << std::endl;
             for (auto &&slice:slices){
               std::cout << slice << std::endl;
