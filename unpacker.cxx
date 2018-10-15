@@ -8,6 +8,7 @@
 #include "TString.h"
 #include "boost/program_options.hpp"
 #include "FairLogger.h"
+#include <memory>
 
 int main(int argc, char **argv)
 {
@@ -39,29 +40,35 @@ int main(int argc, char **argv)
       }
 
       gROOT->SetBatch(true);
-      auto source = new ShipTdcSource(infile.data());
+      std::unique_ptr<ShipTdcSource> source(new ShipTdcSource(infile.data()));
 
-      source->AddUnpacker(new DriftTubeUnpack());
-      source->AddUnpacker(new RPCUnpack());
-      source->AddUnpacker(new ScalerUnpack());
+      std::vector<std::unique_ptr<ShipUnpack>> unpackers;
+      unpackers.emplace_back(new DriftTubeUnpack());
+      unpackers.emplace_back(new RPCUnpack());
+      unpackers.emplace_back(new ScalerUnpack());
+
       if (charm) {
          // TODO merge into single unpacker?
-         source->AddUnpacker(new PixelUnpack(0x0800));
-         source->AddUnpacker(new PixelUnpack(0x0801));
-         source->AddUnpacker(new PixelUnpack(0x0802));
+         unpackers.emplace_back(new PixelUnpack(0x0800));
+         unpackers.emplace_back(new PixelUnpack(0x0801));
+         unpackers.emplace_back(new PixelUnpack(0x0802));
+      }
+
+      for (auto &&unpacker : unpackers) {
+         source->AddUnpacker(unpacker.get());
       }
 
       // Create online run ---------------------------------------------------------
-      auto run = new FairRunOnline(source);
-      run->SetOutputFile(outfile.data());
-      run->SetAutoFinish(true);
-      run->SetRunId(run_number);
+      FairRunOnline run(source.release());
+      run.SetOutputFile(outfile.data());
+      run.SetAutoFinish(true);
+      run.SetRunId(run_number);
 
       // Initialize ----------------------------------------------------------------
-      run->Init();
+      run.Init();
 
       // Run -----------------------------------------------------------------------
-      run->Run(-1, 0); // run over entire file for negative argument.
+      run.Run(-1, 0); // run over entire file for negative argument.
 
    } catch (std::exception &e) {
       LOG(ERROR) << "Unhandled Exception reached the top of main: " << e.what() << ", application will now exit" << FairLogger::endl;
