@@ -7,7 +7,7 @@ do
     shortname=$(echo $rawdata | rev | cut -d'/' -f-3 | rev)
     DIR=$(dirname $shortname)
     FILE=$(basename $shortname .raw)
-    rootdata=/eos/experiment/ship/user/olantwin/$DIR/$FILE.root
+    rootdata=/eos/experiment/ship/user/olantwin/muon_flux/$DIR/$FILE.root
     if [ ! -f $rootdata ]
     then
 	echo $rawdata >> files_to_convert.txt
