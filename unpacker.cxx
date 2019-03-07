@@ -43,7 +43,7 @@ int main(int argc, char **argv)
       std::unique_ptr<ShipTdcSource> source(new ShipTdcSource(infile.data()));
 
       std::vector<std::unique_ptr<ShipUnpack>> unpackers;
-      unpackers.emplace_back(new DriftTubeUnpack());
+      unpackers.emplace_back(new DriftTubeUnpack(charm));
       unpackers.emplace_back(new RPCUnpack());
       unpackers.emplace_back(new ScalerUnpack());
 
