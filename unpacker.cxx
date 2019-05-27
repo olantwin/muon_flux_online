@@ -2,6 +2,7 @@
 #include "FairRunOnline.h"
 #include "PixelUnpack.h"
 #include "DummyUnpack.h"
+#include "SciFiUnpack.h"
 #include "RPCUnpack.h"
 #include "ScalerUnpack.h"
 #include "ShipTdcSource.h"
@@ -53,7 +54,7 @@ int main(int argc, char **argv)
          unpackers.emplace_back(new PixelUnpack(0x0800));
          unpackers.emplace_back(new PixelUnpack(0x0801));
          unpackers.emplace_back(new PixelUnpack(0x0802));
-         unpackers.emplace_back(new DummyUnpack(0x0900));
+         unpackers.emplace_back(new SciFiUnpack());
       }
 
       for (auto &&unpacker : unpackers) {
