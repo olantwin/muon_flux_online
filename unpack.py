@@ -37,10 +37,14 @@ def main():
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("-f", "--input", required=True, help="Input file (can be on EOS)")
+    parser.add_argument(
+        "-f", "--input", required=True, help="Input file (can be on EOS)"
+    )
     parser.add_argument("-o", "--output", required=True, help="Output file")
     parser.add_argument("-n", "--run", default=0, type=int, help="Run number")
-    parser.add_argument("--charm", action="store_true", help="Unpack charm data (default: muon flux)")
+    parser.add_argument(
+        "--charm", action="store_true", help="Unpack charm data (default: muon flux)"
+    )
     args = parser.parse_args()
     ROOT.gROOT.SetBatch(True)
     main()
